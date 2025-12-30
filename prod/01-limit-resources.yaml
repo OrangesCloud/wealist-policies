@@ -1,0 +1,33 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-resource-limits
+  annotations:
+    policies.kyverno.io/title: Require Resource Limits
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce # 위반 시 배포 차단
+  background: true
+  rules:
+    - name: check-cpu-memory-limits
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+              namespaces:
+                - wealist-prod
+      validate:
+        message: "배포 실패: 모든 컨테이너에 CPU와 Memory 리미트(limits)가 반드시 설정되어야 합니다."
+        pattern:
+          spec:
+            template:
+              spec:
+                containers:
+                  # 리스트 내의 모든 컨테이너를 검사합니다.
+                  - resources:
+                      limits:
+                        # "?*"는 "값이 반드시 존재해야 함(Not Empty)"을 의미하는 와일드카드입니다.
+                        memory: "?*"
+                        cpu: "?*"
