@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/severity: medium
 spec:
-  validationFailureAction: Enforce # 위반 시 배포 차단
+  validationFailureAction: Enforce
   background: true
   rules:
     - name: check-cpu-memory-limits
@@ -25,9 +25,7 @@ spec:
             template:
               spec:
                 containers:
-                  # 리스트 내의 모든 컨테이너를 검사합니다.
                   - resources:
                       limits:
-                        # "?*"는 "값이 반드시 존재해야 함(Not Empty)"을 의미하는 와일드카드입니다.
                         memory: "?*"
                         cpu: "?*"
