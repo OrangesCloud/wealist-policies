@@ -1,0 +1,26 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-prod-stage-label
+  annotations:
+    policies.kyverno.io/title: Require Prod Stage Label
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: check-stage-label
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - wealist-prod
+      validate:
+        message: "배포 실패: stage: prod 라벨이 없는 리소스는 배포할 수 없습니다."
+        pattern:
+          metadata:
+            labels:
+              stage: prod
