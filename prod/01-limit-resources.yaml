@@ -15,7 +15,7 @@ spec:
         any:
           - resources:
               kinds:
-                - Deployment
+                - Pod
               namespaces:
                 - wealist-prod
       validate:
