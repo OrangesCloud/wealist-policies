@@ -22,10 +22,8 @@ spec:
         message: "배포 실패: 모든 컨테이너에 CPU와 Memory 리미트(limits)가 반드시 설정되어야 합니다."
         pattern:
           spec:
-            template:
-              spec:
-                containers:
-                  - resources:
-                      limits:
-                        memory: "?*"
-                        cpu: "?*"
+            containers:
+              - resources:
+                  limits:
+                    memory: "?*"
+                    cpu: "?*"
